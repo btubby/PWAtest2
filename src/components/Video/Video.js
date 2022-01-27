@@ -83,7 +83,7 @@ const Video = ({ history }) => {
   return (
     <div>
       <div className="video__explanation">
-        <p>Scan a product&apos;s barcode and get its nutritional values <span role="img" aria-label="apple">🍎</span></p>
+        <p>Scan a product&apos;s barcode to perform an online lookup<span role="img" aria-label="apple">🍎</span></p>
       </div>
       <div className="video__container">
         {videoError ?
