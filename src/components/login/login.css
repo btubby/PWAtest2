@@ -1,0 +1,7 @@
+.login_style {
+  display: flex;
+  position: relative;
+  padding: 10px;
+  transition: box-shadow 0.2s ease-in-out;
+  border: 1px solid red;
+}
