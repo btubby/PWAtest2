@@ -7,6 +7,11 @@ const Login = () => {
   const [ password, setPassword ] = useState("");
   const [ site, setSite ] = useState("");
 
+  const [ loginMessage, setLoginMessage ] = useState("");
+  const [ serverResponse, setServerResponse ] = useState("1");
+  const [ serverResponse2, setServerResponse2 ] = useState("2");
+  const [ serverResponse3, setServerResponse3 ] = useState("3");
+
 //   function validateForm() {
 //     return username.length > 0 && password.length > 0 && site.length >0;
 //   }
@@ -19,17 +24,18 @@ const Login = () => {
       
     function handleSubmit(event) {
         event.preventDefault();
-        console.log("submit")
-        console.log(`${username}`)
-
-        var siteId = "92132";
-        var userId = "Admin";
-        var password = "aaaaaaaa";
+        setLoginMessage(`Attempting login as site[${site}] user[${username}] pass[${password}]`);
+        
+        // var siteId = site;
+        // var userId = username;
+        // var password = "aaaaaaaa";
         var baseUrl = "https://terminalservices1010.tstpaypoint.services/PP.T3.TerminalServices.API";
-        var loginUrl = baseUrl + '/site/' + siteId + '/user/' + userId + '/accesstoken';
-        console.log("loginUrl:" +loginUrl);
+        var loginUrl = baseUrl + '/site/' + site + '/user/' + username + '/accesstoken';
+        // console.log("loginUrl:" +loginUrl);
+        setLoginMessage(loginUrl);
 
-        // fetch(`https://world.openfoodfacts.org/api/v0/product/1.json`, {
+
+        // // fetch(`https://world.openfoodfacts.org/api/v0/product/1.json`, {
 
         const myHeaders = new Headers({
             'Accept': '*/*',
@@ -41,24 +47,34 @@ const Login = () => {
             method: 'POST',
             // mode: 'cors', 
             headers: myHeaders,
-            body: JSON.stringify({'Password': 'aaaaaaaa'})
+            body: JSON.stringify({'Password': password})
         })
-        .then(response => response.json())
+        .then(response => {
+            var r = response.json();
+            setServerResponse('done:', r)
+            return r;
+            })
         .then((data) => {
+            setServerResponse2('Success:', data)
             console.log('Success:', data);
-          })
-          //Then with the error genereted...
-          .catch((error) => {
+        })
+        //Then with the error genereted...
+        .catch((error) => {
+              setServerResponse3('Error:', data)
             console.error('Error:', error);
           });
           
         // .then(res => onInfoFetched(res))
-  
       }
 
   return (
       <div className="login_style">
       <form>
+      <div>
+            <label>Site:
+                <input type="text" id="site" onInput={e => setSite(e.target.value)} />
+            </label>
+        </div>
         <div>
           <label>Username:
             <input type="text" id="username" onInput={e => setUsername(e.target.value)} />
@@ -69,13 +85,19 @@ const Login = () => {
             <input type="text" id="password"  onInput={e => setPassword(e.target.value)} />
             </label>
         </div>
-        <div>
-            <label>Site:
-                <input type="text" id="site"  onInput={e => setSite(e.target.value)} />
-            </label>
-        </div>
+   
     </form>
     <button onClick={handleSubmit} type="submit" form="form1" value="Submit">Login</button>
+    <div>
+<p/>
+    {loginMessage}
+<p/>
+    {serverResponse}
+<p/>
+    {serverResponse2}
+<p/>
+    {serverResponse3}
+    </div>
       </div>
       
     );
